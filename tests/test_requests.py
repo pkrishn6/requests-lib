@@ -181,6 +181,15 @@ class TestRequests:
         assert r.history[0].status_code == 307
         assert r.history[0].is_redirect
 
+    def test_HTTP_307_ALLOW_REDIRECT_POST_WITH_PARTIAL_SEEKABLE(self, httpbin):
+        data = io.BytesIO(b'hello world')
+        data.read(len("hello"))
+        r = requests.post(httpbin('redirect-to'), data=data, params={'url': 'post', 'status_code': 307})
+        assert r.status_code == 200
+        assert r.history[0].status_code == 307
+        assert r.history[0].is_redirect
+        assert r.json()['data'] == ' world'
+
     def test_HTTP_302_TOO_MANY_REDIRECTS(self, httpbin):
         try:
             requests.get(httpbin('relative-redirect', '50'))

@@ -166,7 +166,7 @@ class TestRequests:
         assert r.history[0].is_redirect
 
     def test_HTTP_307_ALLOW_REDIRECT_POST(self, httpbin):
-        r = requests.post(httpbin('redirect-to'), data='test', params={'url': 'post', 'status_code': 307}, timeout=5)
+        r = requests.post(httpbin('redirect-to'), data='test', params={'url': httpbin('post'), 'status_code': 307}, timeout=5)
         assert r.status_code == 200
         assert r.history[0].status_code == 307
         assert r.history[0].is_redirect
@@ -174,7 +174,7 @@ class TestRequests:
 
     def test_HTTP_307_ALLOW_REDIRECT_POST_WITH_SEEKABLE(self, httpbin):
         byte_str = b'test'
-        r = requests.post(httpbin('redirect-to'), data=io.BytesIO(byte_str), params={'url': 'post', 'status_code': 307}, timeout=5)
+        r = requests.post(httpbin('redirect-to'), data=io.BytesIO(byte_str), params={'url': httpbin('post'), 'status_code': 307}, timeout=5)
         assert r.status_code == 200
         assert r.history[0].status_code == 307
         assert r.history[0].is_redirect
@@ -183,7 +183,7 @@ class TestRequests:
     def test_HTTP_307_ALLOW_REDIRECT_POST_WITH_PARTIAL_SEEKABLE(self, httpbin):
         data = io.BytesIO(b'hello world')
         data.read(len("hello"))
-        r = requests.post(httpbin('redirect-to'), data=data, params={'url': 'post', 'status_code': 307}, timeout=5)
+        r = requests.post(httpbin('redirect-to'), data=data, params={'url': httpbin('post'), 'status_code': 307}, timeout=5)
         assert r.status_code == 200
         assert r.history[0].status_code == 307
         assert r.history[0].is_redirect

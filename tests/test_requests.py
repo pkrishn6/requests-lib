@@ -165,7 +165,7 @@ class TestRequests:
         assert r.history[0].status_code == 302
         assert r.history[0].is_redirect
 
-    def test_HTTP_307_ALLOW_REDIRECT_POST(self, httpbin):
+    def test_HTTP_307_ALLOW_REDIRECT_POST_DATA(self, httpbin):
         r = requests.post(httpbin('redirect-to'), data='test', params={'url': httpbin('post'), 'status_code': 307}, timeout=5)
         assert r.status_code == 200
         assert r.history[0].status_code == 307
